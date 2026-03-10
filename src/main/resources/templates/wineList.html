@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>은상의 와인노트</title>
+    <style>
+        table { width: 80%; border-collapse: collapse; margin: 20px auto; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: center; }
+        th { background-color: #f4f4f4; color: #333; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        h2 { text-align: center; color: #5d0c1d; }
+    </style>
+</head>
+<body>
+
+<h2>🍷 나의 와인 보관소</h2>
+<div style="text-align: center; margin-bottom: 20px;">
+    <button th:onclick="|location.href='@{/wines/add}'|"
+            style="padding: 10px 20px; background-color: #5d0c1d; color: white; border: none; cursor: pointer; border-radius: 5px;">
+        새 와인 등록하기
+    </button>
+</div>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>이름</th>
+        <th>종류</th>
+        <th>품종</th>
+        <th>향(Aroma)</th>
+        <th>가격</th>
+        <th>관리</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="wine : ${wines}"> <!--${wines}:컨트롤러에서 model.addAttribute("wines", wines)라고 보냈던 택배상자열기-->
+        <td th:text="${wine.id}">1</td>
+        <td th:text="${wine.name}">G7</td>
+        <td th:text="${wine.type}">Red</td>
+        <td th:text="${wine.variety}">Cabernet</td>
+        <td th:text="${wine.aroma}">Oak</td>
+        <td th:text="${wine.price}">7,900</td>
+        <td>               <!--confirm(...): (선택사항) 실수로 누를 수 있으니 "진짜 지울래?"라고 한 번 물어보는 자바스크립-->
+            <button th:onclick="|if(confirm('정말 삭제하시겠습니까?')) location.href='@{/wines/delete/{id}(id=${wine.id})}'|"
+                style="padding: 5px 10px; background-color: #ff4d4d; color: white; border: none; cursor: pointer; border-radius: 3px;">
+                삭제
+            </button>
+            <button th:onclick="|location.href='@{/wines/edit/{id}(id=${wine.id})}'|"
+                    style="background-color: #3498db; color: white;">수정</button>
+        </td>
+        <!--h:each="wine : ${wines}": 리스트 안에 와인이 10개면 10줄, 100개면 100줄을 자동으로 만들어줌
+        th:text="${wine.name}": Wine 클래스(설계도)에 있는 getName()을 호출해서 화면에 이름을 딱 보여줍니다.-->
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

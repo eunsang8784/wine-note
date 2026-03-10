@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>와인 등록</title>
+    <style>
+        .container { width: 400px; margin: 50px auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; }
+        input { width: 100%; padding: 10px; margin: 10px 0; box-sizing: border-box; }
+        button { width: 100%; padding: 10px; background-color: #5d0c1d; color: white; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>🍷 새 와인 등록</h2>
+    <form action="/wines/add" method="post"> <!--action은 controller에서 만든 /wine/add주소로 콘트롤러로 보내준다-->
+        <input type="text" name="name" placeholder="와인 이름 (예: 빌라 엠)" required>
+        <input type="text" name="type" placeholder="종류 (예: Red, White)">
+        <input type="text" name="variety" placeholder="품종 (예: Moscato)">
+        <input type="text" name="price" placeholder="가격">
+        <input type="text" name="aroma" placeholder="향">
+        <button type="submit">창고에 입고하기</button>
+
+    </form>
+
+</div>
+
+</body>
+</html>

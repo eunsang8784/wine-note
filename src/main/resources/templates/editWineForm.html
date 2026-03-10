@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"><title>와인 수정</title>
+</head>
+<body>
+<h2>📝 와인 정보 수정</h2>
+<form th:action="@{/wines/edit/{id}(id=${wine.id})}" method="post">
+    <input type="text" name="name" th:value="${wine.name}" required><br> <!--required: 필수입력창-->
+    <input type="text" name="type" th:value="${wine.type}"><br>
+    <input type="text" name="variety" th:value="${wine.variety}"><br>
+    <input type="text" name="aroma" th:value="${wine.aroma}"><br>
+    <input type="text" name="price" th:value="${wine.price}"><br>
+    <button type="submit">수정 완료</button>
+</form>
+</body>
+</html>

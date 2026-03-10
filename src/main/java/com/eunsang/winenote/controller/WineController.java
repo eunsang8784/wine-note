@@ -5,6 +5,9 @@ import com.eunsang.winenote.repository.WineRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
@@ -36,6 +39,53 @@ public class WineController {
         //Model은 스프링 MVC 패턴에서 **컨트롤러(Controller)**와 뷰(View, HTML) 사이를 연결해주는 '데이터 셔틀'
         // 또는 **'운반용 박스'**라고 생각하면 가장 쉽습니다.
 
+    }
+
+    //와인 등록폼을 보여주는 창구(GET)
+    //주소: localhost:8081/wines/add
+    @GetMapping("/wines/add")
+    public String addForm(){
+        return "addWineForm"; //addWineForm.html 파일보여줌
+
+    }
+
+    //실제 와인을 DB에 저장하는 창구(POST)
+    @PostMapping("/wines/add")
+    public String addWine(@ModelAttribute Wine wine){
+        //화면에서 보낸 데이터(wine객체)를 그대로 db 창고지기에 전달해서 저장
+        wineRepository.save(wine);
+        //저장이 끝나면 다시 와인 목록 페이지("/wines")로 강제 이동 시킨다.
+        return "redirect:/wines";
+    }
+
+    //와인삭제 요청 처리 창구
+    //@pathVariable Long id: 주소창에 들어온(/wines/delete/1(id))를 낚아채서 id변수에 넣어준다.
+    @GetMapping("/wines/delete/{id}")
+    public String deleteWine(@PathVariable Long id){
+
+        //창고지기에게(repository) 해당 번호id 와인을 지우라고 시킨다.
+        wineRepository.deleteById(id);
+
+        //삭제하면 다시 목록띄우기
+        return "redirect:/wines";
+    }
+
+    //수정화면 보여주기(기존데이터 채워짐)
+    @GetMapping("/wines/edit/{id}")
+    public String editForm(@PathVariable Long id, Model model){
+        //DB에서 해당id 와인을 찾아서 'wine'상자에 담아서 보낸다
+        Wine wine = wineRepository.findById(id).orElse(null);//박스를 열어봐! 만약 안에 와인이 있으면 꺼내주고, 없으면 그냥 null(빈 값)을 줘!"라고 말하는 명령
+        model.addAttribute("wine", wine);
+        return "editWineForm";// editWineForm.html 부른다
+    }
+
+    //실제 수정데이터 저장하기
+    @PostMapping("/wines/edit/{id}")
+    public String editWine(@PathVariable Long id, @ModelAttribute Wine wine){
+        //Id 명시해줘야 JPA가 '새로만들기' 가 아닌 '기존것 고치기'로 인식
+        wine.setId(id);
+        wineRepository.save(wine);
+        return "redirect:/wines";//수정후 목록으로
     }
 
 }
