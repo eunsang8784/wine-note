@@ -20,6 +20,13 @@
         새 와인 등록하기
     </button>
 </div>
+<div style="text-align: center; margin-bottom: 20px;">
+    <form th:action="@{/wines}" method="get"> <!--method="get": 검색은 데이터를 저장하는 게 아니라 '조회'하는 것이므로 주소창에 검색어가 보이는 get 방식을 씁니다.-->
+        <input type="text" name="keyword" placeholder="와인 이름을 입력하세요"
+               style="padding: 8px; width: 250px;">
+        <button type="submit" style="padding: 8px 15px; background-color: #34495e; color: white; border: none; cursor: pointer;">검색</button>
+    </form>
+</div>
 <table>
     <thead>
     <tr>
@@ -29,17 +36,34 @@
         <th>품종</th>
         <th>향(Aroma)</th>
         <th>가격</th>
+        <th>별점</th>
         <th>관리</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="wine : ${wines}"> <!--${wines}:컨트롤러에서 model.addAttribute("wines", wines)라고 보냈던 택배상자열기-->
         <td th:text="${wine.id}">1</td>
-        <td th:text="${wine.name}">G7</td>
+        <td th:text="${wine.name}"
+            th:onclick="|location.href='@{/wines/{id}(id=${wine.id})}'|"
+            style="cursor:pointer; color: #3498db; text-decoration: underline;">
+            G7
+        </td><!--th:onclick: "이 칸을 클릭하면 자바스크립트를 실행해줘!"라는 뜻입니다.
+        location.href: 브라우저의 주소창을 해당 주소로 강제로 옮기는 명령어예요.
+        @{/wines/{id}(id=${wine.id})}: 타임리프의 마법입니다. 만약 와인 번호가 1번이면 주소를 자동으로 /wines/1로 바꿔서 만들어줍니다.-->
         <td th:text="${wine.type}">Red</td>
         <td th:text="${wine.variety}">Cabernet</td>
         <td th:text="${wine.aroma}">Oak</td>
         <td th:text="${wine.price}">7,900</td>
+
+        <td><!--타임리프에는 **?. (Safe Navigation Operator)**라는 마법의 기호가 있습니다. "만약 이게 null이면 더 이상 묻지 말고 그냥 넘어가 줘"라는 뜻-->
+            <span th:if="${wine?.rating == 5}">★★★★★</span>
+            <span th:if="${wine?.rating == 4}">★★★★☆</span>
+            <span th:if="${wine?.rating == 3}">★★★☆☆</span>
+            <span th:if="${wine?.rating == 2}">★★☆☆☆</span>
+            <span th:if="${wine?.rating == 1}">★☆☆☆☆</span>
+            <span th:if="${wine?.rating == 0 || wine?.rating == null}">-</span>
+        </td>
+
         <td>               <!--confirm(...): (선택사항) 실수로 누를 수 있으니 "진짜 지울래?"라고 한 번 물어보는 자바스크립-->
             <button th:onclick="|if(confirm('정말 삭제하시겠습니까?')) location.href='@{/wines/delete/{id}(id=${wine.id})}'|"
                 style="padding: 5px 10px; background-color: #ff4d4d; color: white; border: none; cursor: pointer; border-radius: 3px;">

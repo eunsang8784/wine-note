@@ -24,4 +24,6 @@ public class Wine {
     private String aroma; // 향기 태그(우디향, 과일향 등)
 
     private String price; // 가격
+
+    private int rating; // 별점(1~5점) 추가하기
 }

@@ -6,10 +6,7 @@ import com.eunsang.winenote.service.WineService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,10 +24,13 @@ public class WineController {
 
     //와인목록조회
     @GetMapping("/wines")//("/wines"): 웹브라우저 주소창에 'localhost:8081/wines' 라고 치면 메서드 실행됩니다.
-    public String list(Model model){
+    public String list(@RequestParam(value = "keyword", required = false) String keyword, Model model){
+                        //@RequestParam: 주소창의 ?keyword=G7에서 G7을 낚아챔(없어도 됨: required=false)
                         //@param model: 컨트롤러에서 만든 데이터를 HTML(화면)로 전달해주는 '배달 상자' 역할을 하는 객체입니다.
         //service에서 목록을 달라고 요청
-        List<Wine> wines = wineService.findAllWines();
+        List<Wine> wines = wineService.searchWines(keyword);// service에 searchWine에 담는다
+
+        //List<Wine> wines = wineService.findAllWines();
         //가져온 와인 목록은 'wines'라는 이름 바구니(model)에 담는다.
         //이 바구니는 나중에 HTML 화면으로 전달된다.
         model.addAttribute("wines", wines);
@@ -93,5 +93,23 @@ public class WineController {
         wineService.saveWine(wine); //수정후 저장 service에게 시키기
         return "redirect:/wines";//수정후 목록으로
     }
+
+
+    //@PathVariable 주소창에 {id}번호를 가져온다.
+    //와인상세 정보 보는곳
+    @GetMapping("/wines/{id}")
+    public String detail(@PathVariable Long id, Model model){
+
+        //요리사(Service)에게 특정 번호의 와인 한병을 가져오라고 시킨다.
+        Wine wine = wineService.findWineById(id);
+
+        //가져온 와인을 'wine'이라는 이름으로 배달상자에 담는다.
+        model.addAttribute("wine", wine);
+
+        //wineDetail.html 화면을 보여준다
+        return "wineDetail";
+    }
+
+
 
 }

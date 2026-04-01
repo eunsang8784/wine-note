@@ -11,6 +11,16 @@
     <input type="text" name="variety" th:value="${wine.variety}"><br>
     <input type="text" name="aroma" th:value="${wine.aroma}"><br>
     <input type="text" name="price" th:value="${wine.price}"><br>
+    <label>평점: </label>
+    <select name="rating" style="padding: 10px; margin: 10px 0; width: 100%;">
+        <option value="5" th:selected="${wine.rating == 5}">★★★★★ (최고예요!)</option>
+        <option value="4" th:selected="${wine.rating == 4}">★★★★☆ (추천해요)</option>
+        <option value="3" th:selected="${wine.rating == 3}">★★★☆☆ (무난해요)</option>
+        <option value="2" th:selected="${wine.rating == 2}">★★☆☆☆ (글쎄요..)</option>
+        <option value="1" th:selected="${wine.rating == 1}">★☆☆☆☆ (다신 안 마셔요)</option>
+    </select>
+    <!--비교 연산 (==): ${wine.rating == 4}는 "이 와인의 평점이 4인가요?"라고 묻는 거예요.
+        th:selected: 만약 질문의 답이 **'예(True)'**라면, HTML 소스코드에 자동으로 selected라는 속성을 붙여줍니다.-->
     <button type="submit">수정 완료</button>
 </form>
 </body>

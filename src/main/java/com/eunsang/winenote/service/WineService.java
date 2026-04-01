@@ -33,4 +33,13 @@ public class WineService {
     public Wine findWineById(Long id){
         return wineRepository.findById(id).orElse(null);
     }
+
+
+    public List<Wine> searchWines(String keyword){
+        //검색어가 없으면 전체목록을, 있으면 검색된 목록을 가져온다.
+        if (keyword == null || keyword.isEmpty()){
+            return wineRepository.findAll();
+        }
+        return wineRepository.findByNameContaining(keyword);
+    }
 }

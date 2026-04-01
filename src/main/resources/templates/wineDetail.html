@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>와인 상세보기</title>
+  <style>
+    .detail-card { width: 500px; margin: 50px auto; padding: 30px; border: 1px solid #5d0c1d; border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+    .label { font-weight: bold; color: #5d0c1d; width: 100px; display: inline-block; }
+    .back-btn { display: inline-block; margin-top: 20px; padding: 10px 20px; background-color: #5d0c1d; color: white; text-decoration: none; border-radius: 5px; }
+  </style>
+</head>
+<body>
+<div class="detail-card">
+  <h2>🍷 와인 상세 노트</h2>
+  <hr>
+  <p><span class="label">이름:</span> <span th:text="${wine.name}">G7</span> </p>
+  <p><span class="label">종류:</span> <span th:text="${wine.type}">Red</span></p>
+  <p><span class="label">품종:</span> <span th:text="${wine.variety}">Merlot</span></p>
+  <p><span class="label">향(Aroma):</span> <span th:text="${wine.aroma}">Oak</span></p>
+  <p><span class="label">가격:</span> <span th:text="${wine.price}">12,000원</span></p>
+
+  <a href="/wines" class="back-btn">목록으로 돌아가기</a>
+</div>
+</body>
+</html>
